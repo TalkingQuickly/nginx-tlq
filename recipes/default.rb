@@ -20,6 +20,7 @@ template "/etc/nginx/nginx.conf" do
   group "root"
   mode "0644"
   source "nginx.conf.erb"
+  notifies :run, "execute[restart-nginx]", :immediately
 end
 
 # monit pass through
@@ -29,6 +30,7 @@ if @node[:monit_address]
     group "deploy"
     mode "0644"
     source "monit_interface.erb"
+    notifies :run, "execute[restart-nginx]", :immediately
   end
 end
 
@@ -38,9 +40,7 @@ bash "allowing nginx traffic through firewall" do
   code "ufw allow 80 && ufw allow 443"
 end
 
-# restart nginx
-bash "restarting nginx" do
-  code <<-EOH
-    /etc/init.d/nginx restart
-  EOH
+execute "restart-nginx" do
+  command "/etc/init.d/nginx restart"
+  action :nothing
 end
