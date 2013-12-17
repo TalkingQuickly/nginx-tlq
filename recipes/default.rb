@@ -1,6 +1,9 @@
 # Add the stable nginx repo, stock ubuntu version
 # tends to be at least one major version behind
 
+# need this for add-apt-repository to work properly
+package 'python-software-properties'
+
 bash 'adding stable nginx ppa' do
   user 'root'
   code <<-EOC
