@@ -44,6 +44,6 @@ bash "allowing nginx traffic through firewall" do
 end
 
 execute "restart-nginx" do
-  command "/etc/init.d/nginx restart"
+  command "service nginx restart"
   action :nothing
 end
